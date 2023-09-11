@@ -11,6 +11,7 @@ while read line
 do
     # extract only IPv4 address
     ips=$(nslookup $line | grep -A 1 "Name:" | grep "Address" | awk '{print $2}' | grep -v ":")
+    ips_www=$(nslookup www.$line | grep -A 1 "Name:" | grep "Address" | awk '{print $2}' | grep -v ":")
 
     # save domain and ips to file in one line, splited by space
     for ip in $ips
@@ -18,7 +19,13 @@ do
         echo "$line $ip" >> $output_file
     done
 
+    for ip in $ips_www
+    do
+	    echo "$line $ip" >> $output_file
+    done
+
     # print current processed line number
     cnt=$((cnt + 1))
     echo -ne "\n[$input_file: $cnt/$line_num] $line"
+    echo -ne "\n[$input_file: $cnt/$line_num] www.$line"
 done < $input_file
