@@ -10,6 +10,7 @@ mkdir -p /tmp/$toplist_name
 rm $working_dir/*
 
 #1. split domain file into different files
+sed -i 's/\r$//' $domain_file
 cut -d ',' $domain_file -f 2 > $working_dir/domain_file.dat
 split -l 10000 $working_dir/domain_file.dat $working_dir/domain_ -d -a 3 --additional-suffix=.txt
 
